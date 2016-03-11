@@ -5,9 +5,11 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -18,6 +20,7 @@ public class PerguntasActivity extends AppCompatActivity {
     RadioButton radioButtonR2;
     RadioButton radioButtonR3;
     RadioButton radioButtonR4;
+    int dificuldade;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,9 +56,12 @@ public class PerguntasActivity extends AppCompatActivity {
         radioButtonR1.setText(p.r3);
         radioButtonR1.setText(p.r4);
 
+        fillDatabase();
+
     }
 
     public void fillDatabase(){
+        /*//1
         p = new Pergunta();
         p.titulo = "Qual dessas versões do Android foi lançada por ultimo?";
         p.r1 = "Marshmallow";
@@ -64,6 +70,62 @@ public class PerguntasActivity extends AppCompatActivity {
         p.r4 = "Donut";
         p.difculdade = 4;
         p.save();
+
+        //2
+        p = new Pergunta();
+        p.titulo = "Quantas ligações faz o carbono?";
+        p.r1 = "4";
+        p.r2 = "2";
+        p.r3 = "3";
+        p.r4 = "Nenhuma";
+        p.difculdade = 4;
+        p.save();
+        //3
+        p = new Pergunta();
+        p.titulo = "Qual o continente que tem mais países?";
+        p.r1 = "África";
+        p.r2 = "Europa";
+        p.r3 = "Ásia";
+        p.r4 = "América";
+        p.difculdade = 8;
+        p.save();
+        //4
+        p = new Pergunta();
+        p.titulo = "Qual é a maior cidade da Turquia?";
+        p.r1 = "Istambul";
+        p.r2 = "Ancara";
+        p.r3 = "Bagdá";
+        p.r4 = "Teerã";
+        p.difculdade = 8;
+        p.save();
+        //5
+        p = new Pergunta();
+        p.titulo = "Quantas estrelas tem a bandeira da China?";
+        p.r1 = "Cinco";
+        p.r2 = "Duas";
+        p.r3 = "Três";
+        p.r4 = "Uma";
+        p.difculdade = 8;
+        p.save();
+        //6
+        p = new Pergunta();
+        p.titulo = "Qual a montanha mais elevada da África?";
+        p.r1 = "Kilimanjaro";
+        p.r2 = "Monte Branco";
+        p.r3 = "Aconcágua";
+        p.r4 = "Everest";
+        p.difculdade = 7;
+        p.save(); */
+    }
+
+    public void buttonClickResponder(View v){
+        dificuldade = getIntent().getExtras().getInt("dificuldade");
+        Log.i("Dificuldade", Integer.toString(dificuldade));
+
+        TextView textViewDebug = (TextView) findViewById(R.id.textViewDebug);
+        textViewDebug.setText(Integer.toString(dificuldade));
+
+
     }
 
 }

@@ -6,6 +6,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
     Spinner spinner;
     Button buttonJogar;
+    int dificuldade;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +53,22 @@ public class MainActivity extends AppCompatActivity {
                 //StringBuilder sb = new StringBuilder();
                 //sb.append(position);
                 // Toast.makeText(MainActivity.this, sb.toString(), Toast.LENGTH_SHORT).show();
-                if(position!=0) buttonJogar.setVisibility(View.VISIBLE);
+                Log.i("Id", Long.toString(id));
+                if(id!=0) {
+                    buttonJogar.setVisibility(View.VISIBLE);
+                    if(id==1)
+                        dificuldade = 1;
+                    else if(position ==2)
+                        dificuldade = 2;
+                    else
+                        dificuldade =  3;
+                    Log.i("Dificuldade",Integer.toString(dificuldade));
+
+                }
+
+
+
+
             }
 
             @Override
@@ -84,7 +101,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void buttonJogarClick(View v){
-        startActivity(new Intent(this, PerguntasActivity.class));
+        Bundle bundle = new Bundle();
+        bundle.putInt("dificuldade", dificuldade);
+        Intent intent = new Intent(this, PerguntasActivity.class);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
 
