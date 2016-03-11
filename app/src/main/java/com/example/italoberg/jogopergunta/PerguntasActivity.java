@@ -9,13 +9,15 @@ import android.view.View;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import java.util.List;
+
 public class PerguntasActivity extends AppCompatActivity {
     Pergunta p;
-    TextView titulo;
-    RadioButton r1;
-    RadioButton r2;
-    RadioButton r3;
-    RadioButton r4;
+    TextView textViewTitulo;
+    RadioButton radioButtonR1;
+    RadioButton radioButtonR2;
+    RadioButton radioButtonR3;
+    RadioButton radioButtonR4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,19 +35,23 @@ public class PerguntasActivity extends AppCompatActivity {
             }
         });
 
-        titulo = (TextView) findViewById(R.id.textViewTitulo);
-        //Apague
-        fillDatabase();
-        r1 = (RadioButton) findViewById(R.id.radio_r1);
-        r2 = (RadioButton) findViewById(R.id.radio_r2);
-        r3 = (RadioButton) findViewById(R.id.radio_r3);
-        r4 = (RadioButton) findViewById(R.id.radio_r4);
+        textViewTitulo = (TextView) findViewById(R.id.textViewTitulo);
+
+        radioButtonR1 = (RadioButton) findViewById(R.id.radio_r1);
+        radioButtonR2 = (RadioButton) findViewById(R.id.radio_r2);
+        radioButtonR3 = (RadioButton) findViewById(R.id.radio_r3);
+        radioButtonR4 = (RadioButton) findViewById(R.id.radio_r4);
 
         p = new Pergunta();
 
+        List<Pergunta> todo = Pergunta.listAll(Pergunta.class);
+        p = todo.get(0);
 
-
-        titulo.setText();
+        textViewTitulo.setText(p.titulo);
+        radioButtonR1.setText(p.r1);
+        radioButtonR1.setText(p.r2);
+        radioButtonR1.setText(p.r3);
+        radioButtonR1.setText(p.r4);
 
     }
 
