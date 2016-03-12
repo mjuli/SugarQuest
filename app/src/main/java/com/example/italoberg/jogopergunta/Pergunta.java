@@ -17,4 +17,9 @@ public class Pergunta extends SugarRecord {
 
     }
 
+    public String show()
+    {
+        return titulo+" "+r1+" "+r2+" "+r3+" "+r4+System.lineSeparator();
+    }
+
 }

@@ -21,6 +21,7 @@ public class PerguntasActivity extends AppCompatActivity {
     RadioButton radioButtonR3;
     RadioButton radioButtonR4;
     int dificuldade;
+    TextView textViewDebug;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +46,7 @@ public class PerguntasActivity extends AppCompatActivity {
         radioButtonR3 = (RadioButton) findViewById(R.id.radio_r3);
         radioButtonR4 = (RadioButton) findViewById(R.id.radio_r4);
 
+        //fillDatabase();
         p = new Pergunta();
 
         List<Pergunta> todo = Pergunta.listAll(Pergunta.class);
@@ -56,12 +58,43 @@ public class PerguntasActivity extends AppCompatActivity {
         radioButtonR1.setText(p.r3);
         radioButtonR1.setText(p.r4);
 
-        fillDatabase();
+        dificuldade = getIntent().getExtras().getInt("dificuldade");
+        Log.i("Dificuldade", Integer.toString(dificuldade));
+
+        Log.i("Dificuldade", Integer.toString(dificuldade));
+
+        if(dificuldade==1) {
+            List<Pergunta> perguntas = Pergunta.find(Pergunta.class, "difculdade<=?", "4");
+            Log.i("Pergunta",perguntas.get(0).titulo );
+        }
+        else if(dificuldade==2){
+            List<Pergunta> perguntas = Pergunta.find(Pergunta.class, "difculdade<=? and difculdade>?", "7", "4");
+            Log.i("Pergunta",perguntas.get(0).titulo );
+        }
+        else {
+            List<Pergunta> perguntas = Pergunta.find(Pergunta.class, "difculdade>?", "7");
+            Log.i("Pergunta",perguntas.get(0).titulo );
+
+        }
+    }
+
+    public void showBank(){
+        textViewDebug = (TextView) findViewById(R.id.textViewDebug);
+
+        List<Pergunta> todo = Pergunta.listAll(Pergunta.class);
+
+        String out ="";
+        for(int i=0; i<todo.size(); i++){
+            out+= todo.get(i).show();
+        }
+
+        textViewDebug.setText(out);
+
 
     }
 
     public void fillDatabase(){
-        /*//1
+        //1
         p = new Pergunta();
         p.titulo = "Qual dessas versões do Android foi lançada por ultimo?";
         p.r1 = "Marshmallow";
@@ -115,7 +148,7 @@ public class PerguntasActivity extends AppCompatActivity {
         p.r3 = "Aconcágua";
         p.r4 = "Everest";
         p.difculdade = 7;
-        p.save(); */
+        p.save();
     }
 
     public void buttonClickResponder(View v){
@@ -125,6 +158,7 @@ public class PerguntasActivity extends AppCompatActivity {
         TextView textViewDebug = (TextView) findViewById(R.id.textViewDebug);
         textViewDebug.setText(Integer.toString(dificuldade));
 
+        showBank();
 
     }
 
