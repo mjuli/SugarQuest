@@ -1,5 +1,6 @@
 package com.example.italoberg.jogopergunta;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
+import java.util.Random;
 
 public class PerguntasActivity extends AppCompatActivity {
     Pergunta p;
@@ -61,21 +63,35 @@ public class PerguntasActivity extends AppCompatActivity {
         dificuldade = getIntent().getExtras().getInt("dificuldade");
         Log.i("Dificuldade", Integer.toString(dificuldade));
 
-        Log.i("Dificuldade", Integer.toString(dificuldade));
+        List<Pergunta> round = RandomByLevel(todo,dificuldade);
+        Log.i("Pergunta", round.get(0).titulo);
+        Log.i("Pergunta", round.get(1).titulo);
+        Log.i("Tamanhooooo", Integer.toString(round.size()));
+    }
 
-        if(dificuldade==1) {
-            List<Pergunta> perguntas = Pergunta.find(Pergunta.class, "difculdade<=?", "4");
-            Log.i("Pergunta",perguntas.get(0).titulo );
+    public List<Pergunta> RandomByLevel(List<Pergunta> perguntas, int dif){
+        Random rand = new Random();
+        int num;
+        List<Pergunta> out = perguntas;
+        if(dif==1) {
+             perguntas = Pergunta.find(Pergunta.class, "difculdade<=?", "4");
+            while (perguntas.size()>2){
+                num = rand.nextInt(perguntas.size());
+                perguntas.remove(num);
+            }
+            out = perguntas;
+            Log.i(">>>To aqui <<<","def =1 e fiz a atribuicao" );
         }
-        else if(dificuldade==2){
-            List<Pergunta> perguntas = Pergunta.find(Pergunta.class, "difculdade<=? and difculdade>?", "7", "4");
+        else if(dif==2){
+             perguntas = Pergunta.find(Pergunta.class, "difculdade<=? and difculdade>?", "7", "4");
             Log.i("Pergunta",perguntas.get(0).titulo );
         }
         else {
-            List<Pergunta> perguntas = Pergunta.find(Pergunta.class, "difculdade>?", "7");
+            perguntas = Pergunta.find(Pergunta.class, "difculdade>?", "7");
             Log.i("Pergunta",perguntas.get(0).titulo );
 
         }
+        return out;
     }
 
     public void showBank(){
