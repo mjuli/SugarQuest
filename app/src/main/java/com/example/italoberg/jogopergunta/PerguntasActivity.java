@@ -54,11 +54,7 @@ public class PerguntasActivity extends AppCompatActivity {
         List<Pergunta> todo = Pergunta.listAll(Pergunta.class);
         p = todo.get(0);
 
-        textViewTitulo.setText(p.titulo);
-        radioButtonR1.setText(p.r1);
-        radioButtonR1.setText(p.r2);
-        radioButtonR1.setText(p.r3);
-        radioButtonR1.setText(p.r4);
+        fillViewWithQuestion(p);
 
         dificuldade = getIntent().getExtras().getInt("dificuldade");
         Log.i("Dificuldade", Integer.toString(dificuldade));
@@ -67,6 +63,16 @@ public class PerguntasActivity extends AppCompatActivity {
         Log.i("Pergunta", round.get(0).titulo);
         Log.i("Pergunta", round.get(1).titulo);
         Log.i("Tamanhooooo", Integer.toString(round.size()));
+
+        fillViewWithQuestion(round.get(0));
+    }
+
+    public void fillViewWithQuestion(Pergunta p){
+        textViewTitulo.setText(p.titulo);
+        radioButtonR1.setText(p.r1);
+        radioButtonR2.setText(p.r2);
+        radioButtonR3.setText(p.r3);
+        radioButtonR4.setText(p.r4);
     }
 
     public List<Pergunta> RandomByLevel(List<Pergunta> perguntas, int dif){
@@ -80,11 +86,15 @@ public class PerguntasActivity extends AppCompatActivity {
                 perguntas.remove(num);
             }
             out = perguntas;
-            Log.i(">>>To aqui <<<","def =1 e fiz a atribuicao" );
         }
         else if(dif==2){
              perguntas = Pergunta.find(Pergunta.class, "difculdade<=? and difculdade>?", "7", "4");
             Log.i("Pergunta",perguntas.get(0).titulo );
+            while (perguntas.size()>3){
+                num = rand.nextInt(perguntas.size());
+                perguntas.remove(num);
+            }
+            out = perguntas;
         }
         else {
             perguntas = Pergunta.find(Pergunta.class, "difculdade>?", "7");
