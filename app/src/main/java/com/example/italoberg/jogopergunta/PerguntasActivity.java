@@ -82,10 +82,48 @@ public class PerguntasActivity extends AppCompatActivity {
 
     public void fillViewWithQuestion(Pergunta p){
         textViewTitulo.setText(p.titulo);
-        radioButtonR1.setText(p.r1);
-        radioButtonR2.setText(p.r2);
-        radioButtonR3.setText(p.r3);
-        radioButtonR4.setText(p.r4);
+
+        Random rand = new Random();
+        int num = rand.nextInt(5);
+        Log.i("Random", Integer.toString(num));
+
+        switch (num){
+
+            case 1:
+                radioButtonR1.setText(p.r1);
+                radioButtonR2.setText(p.r2);
+                radioButtonR3.setText(p.r3);
+                radioButtonR4.setText(p.r4);
+                break;
+
+            case 2:
+                radioButtonR1.setText(p.r2);
+                radioButtonR2.setText(p.r4);
+                radioButtonR3.setText(p.r3);
+                radioButtonR4.setText(p.r1);
+                break;
+
+            case 3:
+                radioButtonR1.setText(p.r3);
+                radioButtonR2.setText(p.r2);
+                radioButtonR3.setText(p.r1);
+                radioButtonR4.setText(p.r4);
+                break;
+
+            case 4:
+                radioButtonR1.setText(p.r4);
+                radioButtonR2.setText(p.r3);
+                radioButtonR3.setText(p.r2);
+                radioButtonR4.setText(p.r1);
+                break;
+
+            default:
+                radioButtonR1.setText(p.r4);
+                radioButtonR2.setText(p.r2);
+                radioButtonR3.setText(p.r3);
+                radioButtonR4.setText(p.r1);
+                break;
+        }
     }
 
     public Pergunta RandomQuestionByLevel(List<Pergunta> perguntas, int dif){
@@ -95,26 +133,12 @@ public class PerguntasActivity extends AppCompatActivity {
         Pergunta saida;
         int num;
 
-        if(dif == 1) {
-            todas = Pergunta.find(Pergunta.class, "difculdade<=?", "4");
-            num = rand.nextInt(todas.size() - 1);
-            saida = todas.get(num);
-        }
+        todas = Pergunta.find(Pergunta.class, "difculdade=?",  Integer.toString(dif));
+        num = rand.nextInt(todas.size());
+        saida = todas.get(num);
 
-        else if(dif == 2){
-            todas = Pergunta.find(Pergunta.class, "difculdade<=? and difculdade>?", "7", "4");
-            num = rand.nextInt(todas.size() - 1);
-            saida = todas.get(num);
-        }
-
-        else {
-            todas = Pergunta.find(Pergunta.class, "difculdade>?", "7");
-            num = rand.nextInt(todas.size() - 1);
-            saida = todas.get(num);
-
-        }
         while (perguntadas.contains(todas.get(num)) && perguntadas.size() < 2){
-            num = rand.nextInt(todas.size() - 1);
+            num = rand.nextInt(todas.size());
             saida = todas.get(num);
         }
 
@@ -123,7 +147,7 @@ public class PerguntasActivity extends AppCompatActivity {
         return saida;
     }
 
-    public List<Pergunta> RandomByLevel(List<Pergunta> perguntas, int dif){
+    /*public List<Pergunta> RandomByLevel(List<Pergunta> perguntas, int dif){
 
         Random rand = new Random();
         int num;
@@ -168,9 +192,11 @@ public class PerguntasActivity extends AppCompatActivity {
         textViewDebug.setText(out);
 
 
-    }
+    }*/
 
     public void fillDatabase(){
+        //Pergunta.deleteAll(Pergunta.class);
+
         //1
         p = new Pergunta();
         p.titulo = "Qual dessas versões do Android foi lançada por ultimo?";
@@ -178,7 +204,7 @@ public class PerguntasActivity extends AppCompatActivity {
         p.r2 = "Lolipop";
         p.r3 = "Kitkat";
         p.r4 = "Donut";
-        p.difculdade = 3;
+        p.difculdade = 1;
         p.save();
 
         //2
@@ -188,7 +214,7 @@ public class PerguntasActivity extends AppCompatActivity {
         p.r2 = "2";
         p.r3 = "3";
         p.r4 = "Nenhuma";
-        p.difculdade = 4;
+        p.difculdade = 1;
         p.save();
         //3
         p = new Pergunta();
@@ -197,7 +223,7 @@ public class PerguntasActivity extends AppCompatActivity {
         p.r2 = "Europa";
         p.r3 = "Ásia";
         p.r4 = "América";
-        p.difculdade = 8;
+        p.difculdade = 3;
         p.save();
         //4
         p = new Pergunta();
@@ -206,7 +232,7 @@ public class PerguntasActivity extends AppCompatActivity {
         p.r2 = "Ancara";
         p.r3 = "Bagdá";
         p.r4 = "Teerã";
-        p.difculdade = 8;
+        p.difculdade = 3;
         p.save();
         //5
         p = new Pergunta();
@@ -215,7 +241,7 @@ public class PerguntasActivity extends AppCompatActivity {
         p.r2 = "Duas";
         p.r3 = "Três";
         p.r4 = "Uma";
-        p.difculdade = 8;
+        p.difculdade = 3;
         p.save();
         //6
         p = new Pergunta();
@@ -224,7 +250,7 @@ public class PerguntasActivity extends AppCompatActivity {
         p.r2 = "Monte Branco";
         p.r3 = "Aconcágua";
         p.r4 = "Everest";
-        p.difculdade = 7;
+        p.difculdade = 2;
         p.save();
     }
 
