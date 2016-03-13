@@ -14,7 +14,7 @@ public class SplashActivity extends AppCompatActivity implements Runnable {
 
         //handler import -java.util ou android.os
         Handler handler = new Handler();
-        handler.postDelayed(this, 3000);
+        handler.postDelayed(this, 2000);
     }
 
     public void run(){

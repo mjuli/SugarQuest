@@ -8,21 +8,41 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_main" tools:context=".MainActivity"
-    android:gravity="center"
+
     android:orientation="vertical">
 
 
-   <Spinner
-       android:id="@+id/spinner"
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content" />
+    <TextView
+
+        android:layout_marginTop="20pt"
+        android:textAlignment="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Escolha a dificuldade: "
+        android:textSize="14pt"
+        android:id="@+id/textViewDificuldade" />
+
+    <Spinner
+        android:textAlignment="center"
+        android:textSize="12pt"
+        android:layout_marginTop="15pt"
+        android:id="@+id/spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <Button
+        android:textSize="9pt"
+        android:padding="10dp"
+        android:textColor="#ffffff"
+        android:background="@drawable/mybutton"
+        android:layout_marginTop="20pt"
         android:id="@+id/buttonJogar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Jogar"
         android:onClick="buttonJogarClick"
-        android:visibility="invisible" />
+        android:visibility="invisible"
+        android:layout_gravity="center_horizontal" />
 
 </LinearLayout>

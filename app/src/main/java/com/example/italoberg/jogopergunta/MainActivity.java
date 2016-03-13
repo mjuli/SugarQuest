@@ -28,15 +28,17 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
-        });
+        });*/
+
         //Referencias a View
+
         spinner = (Spinner) findViewById(R.id.spinner);
         buttonJogar = (Button) findViewById(R.id.buttonJogar);
 
@@ -58,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
                     buttonJogar.setVisibility(View.VISIBLE);
                     if(id==1)
                         dificuldade = 1;
-                    else if(position ==2)
+                    else if(id ==2)
                         dificuldade = 2;
                     else
                         dificuldade =  3;
@@ -77,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+        // Inflate the menu; this adds items to the action bar if it is present
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
@@ -90,16 +92,38 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_pontuacao) {
+            Intent pontuacao = new Intent(this, PontuacaoActivity.class);
+            startActivity(pontuacao);
+
+        } else if (id == R.id.action_settings){
             return true;
+
+        }else if (id == R.id.action_sobre){
+            Intent sobre = new Intent(this, SobreActivity.class);
+            startActivity(sobre);
+
+        }else if (id == R.id.action_close){
+            finish();
         }
 
         return super.onOptionsItemSelected(item);
     }
 
     public void buttonJogarClick(View v){
+        /*
+        //Create the bundle
         Bundle bundle = new Bundle();
-        bundle.putInt("dificuldade", dificuldade);
+        //Add your data from getFactualResults method to bundle
+        bundle.putString("VENUE_NAME", venueName);
+        //Add the bundle to the intent
+        i.putExtras(bundle);
+        startActivity(i);
+        */
+
+        Bundle bundle = new Bundle();
+        bundle.putInt("DIFICULDADE", dificuldade);
+
         Intent intent = new Intent(this, PerguntasActivity.class);
         intent.putExtras(bundle);
         startActivity(intent);

@@ -6,6 +6,7 @@ import com.orm.SugarRecord;
  * Created by Italo Berg on 09/03/2016.
  */
 public class Pergunta extends SugarRecord {
+
     public String titulo;
     public String r1;
     public String r2;
@@ -19,7 +20,7 @@ public class Pergunta extends SugarRecord {
 
     public String show()
     {
-        return titulo+" "+r1+" "+r2+" "+r3+" "+r4+System.lineSeparator();
+        return titulo + " " + r1 + " " + r2 + " " + r3 + " " + r4 + System.lineSeparator();
     }
 
 }

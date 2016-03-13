@@ -1,24 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.italoberg.jogopergunta" >
+    package="com.example.italoberg.jogopergunta">
 
     <application
+        android:name="com.orm.SugarApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:name="com.orm.SugarApp">
-
-        <meta-data android:name="DATABASE" android:value="bancojogo.db" />
-        <meta-data android:name="VERSION" android:value="1" />
-        <meta-data android:name="QUERY_LOG" android:value="true" />
-        <meta-data android:name="DOMAIN_PACKAGE_NAME" android:value="com.example.italoberg.jogopergunta" />
+        android:theme="@style/AppTheme">
+        <meta-data
+            android:name="DATABASE"
+            android:value="bancojogo.db" />
+        <meta-data
+            android:name="VERSION"
+            android:value="1" />
+        <meta-data
+            android:name="QUERY_LOG"
+            android:value="true" />
+        <meta-data
+            android:name="DOMAIN_PACKAGE_NAME"
+            android:value="com.example.italoberg.jogopergunta" />
 
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
@@ -26,7 +33,7 @@
         <activity
             android:name=".SplashActivity"
             android:label="@string/title_activity_splash"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -36,8 +43,15 @@
         <activity
             android:name=".PerguntasActivity"
             android:label="@string/title_activity_perguntas"
-            android:theme="@style/AppTheme.NoActionBar" >
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SobreActivity"
+            android:label="@string/title_activity_sobre"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".PontuacaoActivity"
+            android:label="@string/title_activity_pontuacao"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

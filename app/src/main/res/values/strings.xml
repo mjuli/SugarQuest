@@ -1,15 +1,21 @@
 <resources>
-    <string name="app_name">JogoPergunta</string>
-    <string name="action_settings">Settings</string>
-    <string name="title_activity_splash">SplashActivity</string>
-    <string name="title_activity_menu">MenuActivity</string>
+    <string name="app_name">Sugar Quest</string>
+    <string name="action_settings">Configurações</string>
+    <string name="action_pontuacao">Pontuação</string>
+    <string name="action_sobre">Sobre</string>
+    <string name="action_fechar">Sair</string>
+    <string name="title_activity_splash">SugarQuestSplash</string>
+    <string name="title_activity_menu">Menu</string>
 
-        <string-array name="dificuldades_array">
-            <item>Escolha a dificuldade:</item>
-            <item>Fácil</item>
-            <item>Médio</item>
-            <item>Difícil</item>
-        </string-array>
-    <string name="title_activity_perguntas">PerguntasActivity</string>
+    <string-array name="dificuldades_array">
+        <item> - </item>
+        <item>Fácil</item>
+        <item>Médio</item>
+        <item>Difícil</item>
+    </string-array>
+
+    <string name="title_activity_perguntas">SugarQuestActivity</string>
+    <string name="title_activity_sobre">Sobre a Aplicação</string>
+    <string name="title_activity_pontuacao">Pontuacão</string>
 
 </resources>

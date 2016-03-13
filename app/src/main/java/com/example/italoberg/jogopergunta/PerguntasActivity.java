@@ -12,10 +12,13 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class PerguntasActivity extends AppCompatActivity {
+
+    List<Pergunta> perguntadas;
     Pergunta p;
     TextView textViewTitulo;
     RadioButton radioButtonR1;
@@ -27,44 +30,54 @@ public class PerguntasActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perguntas);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        List<Pergunta> tudo = Pergunta.listAll(Pergunta.class);
+
+        if (tudo.size() == 0) {
+            fillDatabase();
+        }
+        Log.i("Banco_Size",Integer.toString(tudo.size()));
+
+        if (perguntadas == null){
+            perguntadas = new ArrayList<Pergunta>();
+        }
+        Log.i("Perguntadas_Size",Integer.toString(perguntadas.size()));
+
 
         textViewTitulo = (TextView) findViewById(R.id.textViewTitulo);
-
         radioButtonR1 = (RadioButton) findViewById(R.id.radio_r1);
         radioButtonR2 = (RadioButton) findViewById(R.id.radio_r2);
         radioButtonR3 = (RadioButton) findViewById(R.id.radio_r3);
         radioButtonR4 = (RadioButton) findViewById(R.id.radio_r4);
 
-        //fillDatabase();
-        p = new Pergunta();
+        Bundle bundle = getIntent().getExtras();
+        //Extract the data…
+        dificuldade = bundle.getInt("DIFICULDADE");
+        Log.i("Dificuldade_recebido",Integer.toString(dificuldade));
+        //dificuldade = getIntent().getExtras().getInt("dificuldade");
 
-        List<Pergunta> todo = Pergunta.listAll(Pergunta.class);
-        p = todo.get(0);
+
+        p = RandomQuestionByLevel(tudo, dificuldade);
+
+        Log.i("Pergunta", p.titulo);
 
         fillViewWithQuestion(p);
 
-        dificuldade = getIntent().getExtras().getInt("dificuldade");
         Log.i("Dificuldade", Integer.toString(dificuldade));
 
-        List<Pergunta> round = RandomByLevel(todo,dificuldade);
-        Log.i("Pergunta", round.get(0).titulo);
+
+        /*List<Pergunta> round = RandomByLevel(tudo,dificuldade);
+
+        ;
         Log.i("Pergunta", round.get(1).titulo);
         Log.i("Tamanhooooo", Integer.toString(round.size()));
 
-        fillViewWithQuestion(round.get(0));
+        fillViewWithQuestion(round.get(0));*/
     }
 
     public void fillViewWithQuestion(Pergunta p){
@@ -75,12 +88,50 @@ public class PerguntasActivity extends AppCompatActivity {
         radioButtonR4.setText(p.r4);
     }
 
+    public Pergunta RandomQuestionByLevel(List<Pergunta> perguntas, int dif){
+
+        Random rand = new Random();
+        List<Pergunta> todas;
+        Pergunta saida;
+        int num;
+
+        if(dif == 1) {
+            todas = Pergunta.find(Pergunta.class, "difculdade<=?", "4");
+            num = rand.nextInt(todas.size() - 1);
+            saida = todas.get(num);
+        }
+
+        else if(dif == 2){
+            todas = Pergunta.find(Pergunta.class, "difculdade<=? and difculdade>?", "7", "4");
+            num = rand.nextInt(todas.size() - 1);
+            saida = todas.get(num);
+        }
+
+        else {
+            todas = Pergunta.find(Pergunta.class, "difculdade>?", "7");
+            num = rand.nextInt(todas.size() - 1);
+            saida = todas.get(num);
+
+        }
+        while (perguntadas.contains(todas.get(num)) && perguntadas.size() < 2){
+            num = rand.nextInt(todas.size() - 1);
+            saida = todas.get(num);
+        }
+
+        Log.i("Pergunta_saida", saida.titulo);
+        perguntadas.add(saida);
+        return saida;
+    }
+
     public List<Pergunta> RandomByLevel(List<Pergunta> perguntas, int dif){
+
         Random rand = new Random();
         int num;
         List<Pergunta> out = perguntas;
+
         if(dif==1) {
-             perguntas = Pergunta.find(Pergunta.class, "difculdade<=?", "4");
+            out = Pergunta.find(Pergunta.class, "difculdade<=?", "4");
+
             while (perguntas.size()>2){
                 num = rand.nextInt(perguntas.size());
                 perguntas.remove(num);
@@ -127,7 +178,7 @@ public class PerguntasActivity extends AppCompatActivity {
         p.r2 = "Lolipop";
         p.r3 = "Kitkat";
         p.r4 = "Donut";
-        p.difculdade = 4;
+        p.difculdade = 3;
         p.save();
 
         //2
@@ -178,13 +229,14 @@ public class PerguntasActivity extends AppCompatActivity {
     }
 
     public void buttonClickResponder(View v){
-        dificuldade = getIntent().getExtras().getInt("dificuldade");
+
+        /*dificuldade = getIntent().getExtras().getInt("dificuldade");
         Log.i("Dificuldade", Integer.toString(dificuldade));
 
         TextView textViewDebug = (TextView) findViewById(R.id.textViewDebug);
         textViewDebug.setText(Integer.toString(dificuldade));
 
-        showBank();
+        showBank();*/
 
     }
 
