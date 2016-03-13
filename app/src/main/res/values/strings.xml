@@ -6,6 +6,7 @@
     <string name="action_fechar">Sair</string>
     <string name="title_activity_splash">SugarQuestSplash</string>
     <string name="title_activity_menu">Menu</string>
+    <string name="responder">Responder</string>
 
     <string-array name="dificuldades_array">
         <item> - </item>

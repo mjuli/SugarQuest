@@ -1,6 +1,7 @@
 package com.example.italoberg.jogopergunta;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -8,25 +9,31 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class PerguntasActivity extends AppCompatActivity {
-
+    List<Pergunta> tudo;
     List<Pergunta> perguntadas;
     Pergunta p;
     TextView textViewTitulo;
+    TextView pontuacao;
+    RadioGroup RG;
     RadioButton radioButtonR1;
     RadioButton radioButtonR2;
     RadioButton radioButtonR3;
     RadioButton radioButtonR4;
+    RadioButton selecionado;
     int dificuldade;
+    Button Responder;
     TextView textViewDebug;
+    int pontos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,31 +43,34 @@ public class PerguntasActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        List<Pergunta> tudo = Pergunta.listAll(Pergunta.class);
+        tudo = Pergunta.listAll(Pergunta.class);
 
         if (tudo.size() == 0) {
             fillDatabase();
         }
-        Log.i("Banco_Size",Integer.toString(tudo.size()));
+        Log.i("Banco_Size", Integer.toString(tudo.size()));
 
-        if (perguntadas == null){
+        if (perguntadas == null) {
             perguntadas = new ArrayList<Pergunta>();
         }
-        Log.i("Perguntadas_Size",Integer.toString(perguntadas.size()));
+        Log.i("Perguntadas_Size", Integer.toString(perguntadas.size()));
 
+        Bundle bundle = getIntent().getExtras();
+        //Extract the data…
+        dificuldade = bundle.getInt("DIFICULDADE");
+        pontos = bundle.getInt("PONTOS");
+
+        Log.i("Pontos", Integer.toString(pontos));
+        Log.i("Dificuldade_recebido", Integer.toString(dificuldade));
+        //dificuldade = getIntent().getExtras().getInt("dificuldade");
 
         textViewTitulo = (TextView) findViewById(R.id.textViewTitulo);
         radioButtonR1 = (RadioButton) findViewById(R.id.radio_r1);
         radioButtonR2 = (RadioButton) findViewById(R.id.radio_r2);
         radioButtonR3 = (RadioButton) findViewById(R.id.radio_r3);
         radioButtonR4 = (RadioButton) findViewById(R.id.radio_r4);
-
-        Bundle bundle = getIntent().getExtras();
-        //Extract the data…
-        dificuldade = bundle.getInt("DIFICULDADE");
-        Log.i("Dificuldade_recebido",Integer.toString(dificuldade));
-        //dificuldade = getIntent().getExtras().getInt("dificuldade");
-
+        pontuacao = (TextView) findViewById(R.id.textViewDebug);
+        pontuacao.setText(Integer.toString(pontos));
 
         p = RandomQuestionByLevel(tudo, dificuldade);
 
@@ -70,6 +80,7 @@ public class PerguntasActivity extends AppCompatActivity {
 
         Log.i("Dificuldade", Integer.toString(dificuldade));
 
+        addListenerRadioButton();
 
         /*List<Pergunta> round = RandomByLevel(tudo,dificuldade);
 
@@ -78,16 +89,46 @@ public class PerguntasActivity extends AppCompatActivity {
         Log.i("Tamanhooooo", Integer.toString(round.size()));
 
         fillViewWithQuestion(round.get(0));*/
+
     }
 
-    public void fillViewWithQuestion(Pergunta p){
+    private void addListenerRadioButton() {
+        RG = (RadioGroup) findViewById(R.id.rg);
+        Responder = (Button) findViewById(R.id.buttonResponder);
+
+        Responder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int selected = RG.getCheckedRadioButtonId();
+                selecionado = (RadioButton) findViewById(selected);
+
+                if (selecionado.getText().equals(p.r1)) {
+                    pontos += dificuldade;
+                }
+
+
+                Bundle bundle = new Bundle();
+                bundle.putInt("DIFICULDADE", dificuldade);
+                bundle.putInt("PONTOS", pontos);
+                Intent intent = new Intent(PerguntasActivity.this, PerguntasActivity.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
+
+
+                //Toast.makeText(PerguntasActivity.this,selecionado.getText(),Toast.LENGTH_LONG).show();
+            }
+        });
+
+    }
+
+    public void fillViewWithQuestion(Pergunta p) {
         textViewTitulo.setText(p.titulo);
 
         Random rand = new Random();
         int num = rand.nextInt(5);
         Log.i("Random", Integer.toString(num));
 
-        switch (num){
+        switch (num) {
 
             case 1:
                 radioButtonR1.setText(p.r1);
@@ -126,18 +167,18 @@ public class PerguntasActivity extends AppCompatActivity {
         }
     }
 
-    public Pergunta RandomQuestionByLevel(List<Pergunta> perguntas, int dif){
+    public Pergunta RandomQuestionByLevel(List<Pergunta> perguntas, int dif) {
 
         Random rand = new Random();
         List<Pergunta> todas;
         Pergunta saida;
         int num;
 
-        todas = Pergunta.find(Pergunta.class, "difculdade=?",  Integer.toString(dif));
+        todas = Pergunta.find(Pergunta.class, "difculdade=?", Integer.toString(dif));
         num = rand.nextInt(todas.size());
         saida = todas.get(num);
 
-        while (perguntadas.contains(todas.get(num)) && perguntadas.size() < 2){
+        while (perguntadas.contains(todas.get(num)) && perguntadas.size() < 2) {
             num = rand.nextInt(todas.size());
             saida = todas.get(num);
         }
@@ -194,7 +235,7 @@ public class PerguntasActivity extends AppCompatActivity {
 
     }*/
 
-    public void fillDatabase(){
+    public void fillDatabase() {
         //Pergunta.deleteAll(Pergunta.class);
 
         //1
@@ -254,15 +295,50 @@ public class PerguntasActivity extends AppCompatActivity {
         p.save();
     }
 
-    public void buttonClickResponder(View v){
 
+    /*public void buttonClickResponder(View v){
         /*dificuldade = getIntent().getExtras().getInt("dificuldade");
         Log.i("Dificuldade", Integer.toString(dificuldade));
 
         TextView textViewDebug = (TextView) findViewById(R.id.textViewDebug);
         textViewDebug.setText(Integer.toString(dificuldade));
 
-        showBank();*/
+        showBank();
+        Bundle bundle = new Bundle();
+        bundle.putInt("DIFICULDADE", dificuldade);
+        bundle.putInt("PONTOS", pontos);
+        Intent intent = new Intent(PerguntasActivity.this, PerguntasActivity.class);
+        intent.putExtras(bundle);
+        startActivity(intent);
+
+    }*/
+
+    public void buttonClickResponder(View v){
+
+        RG = (RadioGroup) findViewById(R.id.rg);
+        Responder = (Button) findViewById(R.id.buttonResponder);
+
+        Responder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int selected = RG.getCheckedRadioButtonId();
+                selecionado = (RadioButton) findViewById(selected);
+
+                Log.i("Resposta_certa", p.r1);
+                Log.i("Resposta_selected", selecionado.getText().toString());
+
+                if (selecionado.getText().toString().equals(p.r1)) {
+                    pontos += dificuldade;
+                }
+            }
+        });
+
+        Bundle bundle = new Bundle();
+        bundle.putInt("DIFICULDADE", dificuldade);
+        bundle.putInt("PONTOS", pontos);
+        Intent intent = new Intent(PerguntasActivity.this, PerguntasActivity.class);
+        intent.putExtras(bundle);
+        startActivity(intent);
 
     }
 
