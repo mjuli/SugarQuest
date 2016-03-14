@@ -18,14 +18,17 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Medium Text"
         android:id="@+id/textView8"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/textView9"
+        android:layout_marginTop="20pt"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Melhores Pontuações"
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimary"
         android:id="@+id/textView9"
         android:layout_centerHorizontal="true" />
 </RelativeLayout>
