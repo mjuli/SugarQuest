@@ -14,12 +14,13 @@
         android:layout_gravity="center_horizontal" />
 
     <TextView
+        android:text="Você fez ..."
         android:textColor="@color/colorPrimary"
         android:layout_marginTop="10pt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:id="@+id/pontos"
+        android:id="@+id/text_pontos"
         android:layout_gravity="center_horizontal" />
 
 
@@ -35,12 +36,13 @@
         android:hint="@string/nome"/>
 
     <Button
-        android:layout_marginTop="10pt"
+        android:layout_margin="10pt"
+        android:textSize="9pt"
         android:textColor="#ffffff"
         android:background="@drawable/mybutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="OK"
-        android:id="@+id/ok"
+        android:id="@+id/btn_ok"
         android:layout_gravity="center_horizontal" />
 </LinearLayout>

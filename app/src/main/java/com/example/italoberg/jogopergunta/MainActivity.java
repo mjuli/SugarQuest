@@ -95,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_pontuacao) {
             Intent pontuacao = new Intent(this, PontuacaoActivity.class);
             startActivity(pontuacao);
+            finish();
 
         } else if (id == R.id.action_settings){
             return true;

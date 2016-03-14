@@ -13,16 +13,16 @@
     tools:showIn="@layout/activity_pontuacao">
 
     <TextView
+        android:textSize="11pt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Medium Text"
-        android:id="@+id/textView8"
+        android:id="@+id/textViewPontuacao"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/textView9"
-        android:layout_marginTop="20pt"/>
+        android:layout_marginTop="10pt"/>
 
-    <TextView
+    <!--<TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
@@ -30,5 +30,20 @@
         android:textStyle="bold"
         android:textColor="@color/colorPrimary"
         android:id="@+id/textView9"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true" />-->
+
+    <Button
+        android:textSize="9pt"
+        android:padding="10dp"
+        android:textColor="#ffffff"
+        android:background="@drawable/mybutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Voltar"
+        android:id="@+id/button"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20pt"
+        android:onClick="buttonVoltar" />
+
 </RelativeLayout>

@@ -9,8 +9,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
+
+import java.util.List;
 
 public class PontuacaoActivity extends AppCompatActivity {
+    private TextView textPontuacao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,15 +22,22 @@ public class PontuacaoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pontuacao);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        textPontuacao = (TextView) findViewById(R.id.textViewPontuacao);
+        fillPoints();
+    }
 
-        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
+    public void fillPoints(){
+        List<Pontuacao> points = Pontuacao.findWithQuery(Pontuacao.class, "SELECT * FROM Pontuacao ORDER BY pontos DESC", null);
+        String pontuacaoFinal = "";
+        int posicao = 1;
+        for(Pontuacao p : points){
+            pontuacaoFinal += posicao + "º  " + p.nome + " - " + p.pontos + "\n";
+            posicao++;
+            //só mostra os 10 primeiros
+            if (posicao == 11)
+                break;
+        }
+        textPontuacao.setText(pontuacaoFinal);
     }
 
     @Override
@@ -60,6 +71,12 @@ public class PontuacaoActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void buttonVoltar(View v){
+        Intent intent = new Intent(PontuacaoActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 
 }

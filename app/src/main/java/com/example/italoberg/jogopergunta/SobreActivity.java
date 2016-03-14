@@ -56,6 +56,7 @@ public class SobreActivity extends AppCompatActivity {
             startActivity(sobre);
 
         }else if (id == R.id.action_close){
+
             finish();
         }
 

@@ -1,6 +1,7 @@
 package com.example.italoberg.jogopergunta;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -34,12 +35,12 @@ public class PerguntasActivity extends AppCompatActivity {
     RadioButton selecionado;
     int dificuldade;
     Button Responder;
-    TextView textViewDebug;
     int pontos;
     int rodadasFacil = 2;
     int rodadasMedio = 3;
     int rodadasDificil = 4;
     int rodadaAtual;
+    private Dialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,8 +90,6 @@ public class PerguntasActivity extends AppCompatActivity {
         radioButtonR2 = (RadioButton) findViewById(R.id.radio_r2);
         radioButtonR3 = (RadioButton) findViewById(R.id.radio_r3);
         radioButtonR4 = (RadioButton) findViewById(R.id.radio_r4);
-        pontuacao = (TextView) findViewById(R.id.textViewDebug);
-        pontuacao.setText(Integer.toString(pontos));
 
         p = RandomQuestionByLevel(tudo, dificuldade);
 
@@ -126,7 +125,17 @@ public class PerguntasActivity extends AppCompatActivity {
                 }
 
                 if (rodadaAtual >= dificuldade){
+                    Button btnOK;
+                    dialog = new Dialog(PerguntasActivity.this);
+                    dialog.setContentView(R.layout.content_dialog);
+                    TextView textViewPontos = (TextView) dialog.findViewById(R.id.text_pontos);
+                    textViewPontos.setText("Você fez " + pontos + " pontos!");
+                    btnOK = (Button) dialog.findViewById(R.id.btn_ok);
+                    btnOK.setOnClickListener(listenerPontuacao);
+                    dialog.show();
 
+                /*
+                    //Funciona tbm, mas preferi usar um layout
                     AlertDialog.Builder builder = new AlertDialog.Builder(PerguntasActivity.this);
                     builder.setTitle(R.string.parabens);
                     builder.setMessage("Você fez " + pontos + " pontos!");
@@ -136,7 +145,6 @@ public class PerguntasActivity extends AppCompatActivity {
                     {
                         @Override
                         public void onClick(DialogInterface dialog, int whichButton) {
-                            // SHOULD NOW WORK
                             String nome = input.getText().toString();
 
                             Pontuacao pont = new Pontuacao();
@@ -150,7 +158,7 @@ public class PerguntasActivity extends AppCompatActivity {
                         }
                     });
                     AlertDialog dialog = builder.create();
-                    dialog.show();
+                    dialog.show();*/
 
                 } else {
                     Bundle bundle = new Bundle();
@@ -180,6 +188,23 @@ public class PerguntasActivity extends AppCompatActivity {
 
 
     }
+
+    private View.OnClickListener listenerPontuacao = new View.OnClickListener() {
+        public void onClick(View v) {
+            EditText editTextNome = (EditText) dialog.findViewById(R.id.nome);
+            String nome = editTextNome.getText().toString();
+
+            Pontuacao pont = new Pontuacao();
+            pont.nome = nome;
+            pont.pontos = pontos;
+            pont.save();
+
+            Intent intent = new Intent(PerguntasActivity.this, PontuacaoActivity.class);
+            startActivity(intent);
+            finish();
+
+        }
+    };
 
     public void fillViewWithQuestion(Pergunta p) {
         textViewTitulo.setText(p.titulo);

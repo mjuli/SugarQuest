@@ -7,7 +7,8 @@
     <string name="title_activity_splash">SugarQuestSplash</string>
     <string name="title_activity_menu">Menu</string>
     <string name="responder">Responder</string>
-    <string name="parabens">Parabéns</string>
+    <string name="parabens">Parabéns!</string>
+    <string name="fim">Você terminou</string>
     <string name="nome">Digite seu nome</string>
 
     <string-array name="dificuldades_array">
@@ -19,6 +20,6 @@
 
     <string name="title_activity_perguntas">Perguntas</string>
     <string name="title_activity_sobre">Sobre a Aplicação</string>
-    <string name="title_activity_pontuacao">Pontuacão</string>
+    <string name="title_activity_pontuacao">Melhores Pontuacões</string>
 
 </resources>
