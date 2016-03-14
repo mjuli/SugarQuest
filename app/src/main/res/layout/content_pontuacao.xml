@@ -12,4 +12,20 @@
     tools:context="com.example.italoberg.jogopergunta.PontuacaoActivity"
     tools:showIn="@layout/activity_pontuacao">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Medium Text"
+        android:id="@+id/textView8"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Melhores Pontuações"
+        android:id="@+id/textView9"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>

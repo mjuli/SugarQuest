@@ -1,10 +1,8 @@
 package com.example.italoberg.jogopergunta;
 
+import android.app.AlertDialog;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -13,14 +11,14 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class PerguntasActivity extends AppCompatActivity {
     List<Pergunta> tudo;
-    List<Pergunta> perguntadas;
+    ArrayList<Long> perguntadas;
     Pergunta p;
     TextView textViewTitulo;
     TextView pontuacao;
@@ -34,6 +32,10 @@ public class PerguntasActivity extends AppCompatActivity {
     Button Responder;
     TextView textViewDebug;
     int pontos;
+    int rodadasFacil = 2;
+    int rodadasMedio = 3;
+    int rodadasDificil = 4;
+    int rodadaAtual;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,24 +47,38 @@ public class PerguntasActivity extends AppCompatActivity {
 
         tudo = Pergunta.listAll(Pergunta.class);
 
+
         if (tudo.size() == 0) {
             fillDatabase();
         }
         Log.i("Banco_Size", Integer.toString(tudo.size()));
 
-        if (perguntadas == null) {
-            perguntadas = new ArrayList<Pergunta>();
-        }
-        Log.i("Perguntadas_Size", Integer.toString(perguntadas.size()));
+
 
         Bundle bundle = getIntent().getExtras();
         //Extract the data…
         dificuldade = bundle.getInt("DIFICULDADE");
         pontos = bundle.getInt("PONTOS");
+        rodadaAtual = bundle.getInt("RODADA");
 
         Log.i("Pontos", Integer.toString(pontos));
+        Log.i("Rodada", Integer.toString(rodadaAtual));
         Log.i("Dificuldade_recebido", Integer.toString(dificuldade));
+
         //dificuldade = getIntent().getExtras().getInt("dificuldade");
+
+        perguntadas = new ArrayList<Long>();
+        if (rodadaAtual != 0) {
+            ArrayList<String> conv = bundle.getStringArrayList("PERGUNTADAS");
+
+            for (String id : conv) {
+                perguntadas.add(Long.parseLong(id));
+            }
+            //(ArrayList<String>) getIntent().getSerializableExtra("mylist");
+            //ArrayList arrayList<Integer> = getIntent().getIntegerArrayListExtra("arraylist")
+        }
+
+        Log.i("Perguntadas_Size", Integer.toString(perguntadas.size()));
 
         textViewTitulo = (TextView) findViewById(R.id.textViewTitulo);
         radioButtonR1 = (RadioButton) findViewById(R.id.radio_r1);
@@ -79,7 +95,6 @@ public class PerguntasActivity extends AppCompatActivity {
         fillViewWithQuestion(p);
 
         Log.i("Dificuldade", Integer.toString(dificuldade));
-
         addListenerRadioButton();
 
         /*List<Pergunta> round = RandomByLevel(tudo,dificuldade);
@@ -106,18 +121,41 @@ public class PerguntasActivity extends AppCompatActivity {
                     pontos += dificuldade;
                 }
 
+                if (rodadaAtual >= dificuldade){
 
-                Bundle bundle = new Bundle();
-                bundle.putInt("DIFICULDADE", dificuldade);
-                bundle.putInt("PONTOS", pontos);
-                Intent intent = new Intent(PerguntasActivity.this, PerguntasActivity.class);
-                intent.putExtras(bundle);
-                startActivity(intent);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(PerguntasActivity.this);
+                    builder.setTitle(R.string.parabens);
+                    builder.setPositiveButton("OK", null);
+                    builder.setMessage("Você fez " + pontos + " pontos!");
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
 
+                } else {
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("DIFICULDADE", dificuldade);
+                    bundle.putInt("PONTOS", pontos);
+                    bundle.putInt("RODADA", rodadaAtual + 1);
+
+                    //convertendo a list de ids do tipo long para string para poder passar pelo bundle
+                    //Java não gosta de mim
+                    ArrayList perguntasID = new ArrayList<String>();
+                    for (Long id : perguntadas) {
+                        perguntasID.add(String.valueOf(id));
+                    }
+
+                    bundle.putStringArrayList("PERGUNTADAS", perguntasID);
+
+                    Intent intent = new Intent(PerguntasActivity.this, PerguntasActivity.class);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                    finish();
+                }
 
                 //Toast.makeText(PerguntasActivity.this,selecionado.getText(),Toast.LENGTH_LONG).show();
             }
         });
+
+
 
     }
 
@@ -178,13 +216,13 @@ public class PerguntasActivity extends AppCompatActivity {
         num = rand.nextInt(todas.size());
         saida = todas.get(num);
 
-        while (perguntadas.contains(todas.get(num)) && perguntadas.size() < 2) {
+        while (perguntadas.contains(saida.getId()) && perguntadas.size() < (dificuldade + 1)) {
             num = rand.nextInt(todas.size());
             saida = todas.get(num);
         }
 
         Log.i("Pergunta_saida", saida.titulo);
-        perguntadas.add(saida);
+        perguntadas.add(saida.getId());
         return saida;
     }
 
@@ -293,6 +331,42 @@ public class PerguntasActivity extends AppCompatActivity {
         p.r4 = "Everest";
         p.difculdade = 2;
         p.save();
+        //7
+        p = new Pergunta();
+        p.titulo = "Qual foi a primeira capital do Brasil?";
+        p.r1 = "Salvador";
+        p.r2 = "Rio de Janeiro";
+        p.r3 = "Recife";
+        p.r4 = "Olinda";
+        p.difculdade = 2;
+        p.save();
+        //8
+        p = new Pergunta();
+        p.titulo = "O Japão também é conhecido como: ";
+        p.r1 = "A terra do sol nascente";
+        p.r2 = "A terra dos Orixás";
+        p.r3 = "A terra dos equipamentos eletrônicos";
+        p.r4 = "A terra das artes marciais";
+        p.difculdade = 2;
+        p.save();
+        //9
+        p = new Pergunta();
+        p.titulo = "Numa sala havia 5 homens e 4 mulheres. Metade das mulheres usavam dois anéis em cada mão, e a outra metade apenas um anel em cada mão. Juntando homens e mulheres, quantos dedos livres existem?";
+        p.r1 = "78";
+        p.r2 = "90";
+        p.r3 = "82";
+        p.r4 = "70";
+        p.difculdade = 3;
+        p.save();
+        //10
+        p = new Pergunta();
+        p.titulo = "Qual o nome do principal rival do Pato Donald na conquista de Margarida?";
+        p.r1 = "Gastão";
+        p.r2 = "Peninha";
+        p.r3 = "Gansolino";
+        p.r4 = "Tio Patinhas";
+        p.difculdade = 3;
+        p.save();
     }
 
 
@@ -313,7 +387,7 @@ public class PerguntasActivity extends AppCompatActivity {
 
     }*/
 
-    public void buttonClickResponder(View v){
+    /*public void buttonClickResponder(View v){
 
         RG = (RadioGroup) findViewById(R.id.rg);
         Responder = (Button) findViewById(R.id.buttonResponder);
@@ -340,6 +414,6 @@ public class PerguntasActivity extends AppCompatActivity {
         intent.putExtras(bundle);
         startActivity(intent);
 
-    }
+    }*/
 
 }

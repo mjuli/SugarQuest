@@ -124,9 +124,11 @@ public class MainActivity extends AppCompatActivity {
         Bundle bundle = new Bundle();
         bundle.putInt("DIFICULDADE", dificuldade);
         bundle.putInt("PONTOS", 0);
+        bundle.putInt("RODADA", 0);
         Intent intent = new Intent(this, PerguntasActivity.class);
         intent.putExtras(bundle);
         startActivity(intent);
+        finish();
     }
 
 
