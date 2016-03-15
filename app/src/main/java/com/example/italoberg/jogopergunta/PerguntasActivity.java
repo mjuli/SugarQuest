@@ -41,6 +41,9 @@ public class PerguntasActivity extends AppCompatActivity {
     int rodadasDificil = 4;
     int rodadaAtual;
     private Dialog dialog;
+    Long id;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +68,7 @@ public class PerguntasActivity extends AppCompatActivity {
         dificuldade = bundle.getInt("DIFICULDADE");
         pontos = bundle.getInt("PONTOS");
         rodadaAtual = bundle.getInt("RODADA");
+        id = bundle.getLong("ID");
 
         Log.i("Pontos", Integer.toString(pontos));
         Log.i("Rodada", Integer.toString(rodadaAtual));
@@ -162,6 +166,7 @@ public class PerguntasActivity extends AppCompatActivity {
 
                 } else {
                     Bundle bundle = new Bundle();
+                    bundle.putLong("ID", id);
                     bundle.putInt("DIFICULDADE", dificuldade);
                     bundle.putInt("PONTOS", pontos);
                     bundle.putInt("RODADA", rodadaAtual + 1);
@@ -191,11 +196,15 @@ public class PerguntasActivity extends AppCompatActivity {
 
     private View.OnClickListener listenerPontuacao = new View.OnClickListener() {
         public void onClick(View v) {
-            EditText editTextNome = (EditText) dialog.findViewById(R.id.nome);
+            /*EditText editTextNome = (EditText) dialog.findViewById(R.id.nome);
             String nome = editTextNome.getText().toString();
 
             Pontuacao pont = new Pontuacao();
             pont.nome = nome;
+            pont.pontos = pontos;
+            pont.save();*/
+
+            Pontuacao pont = Pontuacao.findById(Pontuacao.class, id);
             pont.pontos = pontos;
             pont.save();
 

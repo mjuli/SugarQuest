@@ -1,7 +1,10 @@
 package com.example.italoberg.jogopergunta;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -13,13 +16,24 @@ import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class MainActivity extends AppCompatActivity {
     Spinner spinner;
     Button buttonJogar;
     int dificuldade;
+    private Bitmap bitmap;
+    ImageView img;
+    ImageView img2;
+    EditText editNome;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +89,64 @@ public class MainActivity extends AppCompatActivity {
                 // your code here
             }
         });
+
+        img = (ImageView) findViewById(R.id.imageView);
+        img2 = (ImageView) findViewById(R.id.imageView1);
+
+        img.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                abrirCamera();
+            }
+        });
+
+        img2.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                carregarGaleria();
+            }
+        });
+    }
+
+    public void abrirCamera(){
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent, 0);
+    }
+
+    public void carregarGaleria(){
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        startActivityForResult(intent,1);
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        InputStream stream = null;
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            try {
+                if (bitmap != null) {
+                    bitmap.recycle();
+                }
+                stream = getContentResolver().openInputStream(data.getData());
+                bitmap = BitmapFactory.decodeStream(stream);
+                img2.setImageBitmap(bitmap);
+            }
+            catch(FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            finally {
+                if (stream != null)
+                    try {
+                        stream.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+            }
+
+        }
     }
 
     @Override
@@ -121,11 +193,20 @@ public class MainActivity extends AppCompatActivity {
         i.putExtras(bundle);
         startActivity(i);
         */
+        editNome = (EditText) findViewById(R.id.nome);
+        String nome = editNome.getText().toString();
+
+        Pontuacao pont = new Pontuacao();
+        pont.nome = nome;
+        //pont.pontos = pontos;
+        pont.save();
 
         Bundle bundle = new Bundle();
         bundle.putInt("DIFICULDADE", dificuldade);
         bundle.putInt("PONTOS", 0);
         bundle.putInt("RODADA", 0);
+        bundle.putLong("ID", pont.getId());
+
         Intent intent = new Intent(this, PerguntasActivity.class);
         intent.putExtras(bundle);
         startActivity(intent);
